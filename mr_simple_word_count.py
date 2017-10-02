@@ -45,7 +45,7 @@ class MRTopN(MRJob):
         for words in word_counts:
             heappush(self.h_all, (words[0], words[1]))
 
-    def heap_reducer_final(self):
+    def reducer_final(self):
         # Bring it altogether
         largest = nlargest(self.n, self.h_all)
         words = [(word, int(count)) for count, word in largest]
