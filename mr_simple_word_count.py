@@ -56,7 +56,7 @@ class MRTop100(MRJob):
     # Combine the word count and top N classes
 
     def steps(self):
-        return MRWordCount.steps(self) + MRTopN.steps(self)
+        return MRWordCount().steps() + MRTopN().steps()
 
 
 if __name__ == '__main__':
