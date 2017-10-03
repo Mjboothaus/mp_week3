@@ -34,11 +34,10 @@ class Top100_MR(MRJob):
 
 
     def mapper_extract_xml_words(self, _, page):
-        root = et.fromstring(page)
+        root = et.fromstring(page.decode('utf-8'))
         tag_and_text = [(x.tag, x.text) for x in root.getiterator()]
         for tag, text in tag_and_text:
             if (tag == TEXT_TAG and text):
-                text = text.decode('utf-8')
                 parse_filter = mwparserfromhell.parse(text)
                 for parsedtext in parse_filter.filter_text():
                     for word in RE_WORD.findall(parsedtext.value):
