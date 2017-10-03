@@ -9,11 +9,11 @@ from heapq import heappush, heapreplace
 from mwparserfromhell import parse
 from random import random
 
-RE_WORD = re.compile(r'\w+')
+RE_WORD  = re.compile(r'\w+')
 RE_START = re.compile('.*<page>.*')
-RE_END = re.compile('.*</page>.*')
+RE_END   = re.compile('.*</page>.*')
 
-LENGTH_RES = 2000
+LENGTH_RES = 1e6
 
 
 class LinkStatistics_MR(MRJob):
@@ -93,9 +93,9 @@ class LinkStatistics_MR(MRJob):
         elif key == 'reservoir':
             counts = [x for rand_num, x in vals]
             counts.sort()
-            yield ('25th percentile', float(counts[int(round(len(counts) * 0.25) - 1)]))
-            yield ('median', float(counts[int(round(len(counts) * 0.5) - 1)]))
-            yield ('75th percentile', float(counts[int(round(len(counts) * 0.75) - 1)]))
+            yield ('25%', float(counts[int(round(len(counts) * 0.25) - 1)]))
+            yield ('50%', float(counts[int(round(len(counts) * 0.50) - 1)]))
+            yield ('75%', float(counts[int(round(len(counts) * 0.75) - 1)]))
 
 
     def steps(self):

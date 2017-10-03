@@ -1,4 +1,4 @@
-# Q2: Top 100 words - WikiData - Top100_MR (mrjob framework)
+# Q3: Top 100 words - WikiData - Top100_MR (mrjob framework)
 
 from mrjob.job import MRJob
 from mrjob.step import MRStep
@@ -83,18 +83,18 @@ class Top100_MR(MRJob):
 
     def steps(self):
         return [
-            MRStep(mapper_init=self.string_mapper_init,
-                   mapper=self.string_mapper,
-                   reducer=self.string_reducer),
-            MRStep(mapper=self.mapper_extract_xml_words,
-                   combiner=self.combiner_count_words,
-                   reducer=self.reducer_count_words),
-            MRStep(mapper_init=self.heap_mapper_init,
-                   mapper=self.heap_mapper,
-                   mapper_final=self.heap_mapper_final,
-                   reducer_init=self.heap_reducer_init,
-                   reducer=self.heap_reducer,
-                   reducer_final=self.heap_reducer_final)]
+            MRStep(mapper_init   = self.string_mapper_init,
+                   mapper        = self.string_mapper,
+                   reducer       = self.string_reducer),
+            MRStep(mapper        = self.mapper_extract_xml_words,
+                   combiner      = self.combiner_count_words,
+                   reducer       = self.reducer_count_words),
+            MRStep(mapper_init   = self.heap_mapper_init,
+                   mapper        = self.heap_mapper,
+                   mapper_final  = self.heap_mapper_final,
+                   reducer_init  = self.heap_reducer_init,
+                   reducer       = self.heap_reducer,
+                   reducer_final = self.heap_reducer_final)]
 
 
 if __name__ == '__main__':
