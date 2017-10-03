@@ -4,21 +4,21 @@ from mrjob.job import MRJob
 from mrjob.step import MRStep
 import xml.etree.ElementTree as et
 import re
-#import mwparserfromhell
+# import mwparserfromhell
 from mwparserfromhell import parse
 from heapq import nlargest, heappush
 
-RE_WORD  = re.compile(r'\w+')
+RE_WORD = re.compile(r'\w+')
 
 RE_START = re.compile('.*<page>.*')
-RE_END   = re.compile('.*</page>.*')
+RE_END = re.compile('.*</page>.*')
 
 TEXT_TAG = 'text'
+
 
 class Top100_MR(MRJob):
     def string_mapper_init(self):
         self.pageall = ''
-
 
     def string_mapper(self, _, line):
         self.pageall = self.pageall + line
@@ -28,11 +28,9 @@ class Top100_MR(MRJob):
             if RE_START.match(page):
                 yield (None, page)
 
-
     def string_reducer(self, _, pages):
         for page in pages:
             yield (None, page)
-
 
     def mapper_extract_xml_words(self, _, page):
         root = et.fromstring(page.encode('utf-8'))
@@ -53,7 +51,6 @@ class Top100_MR(MRJob):
         # num_occurrences is so we can use max() function
         yield (word, sum(counts))
 
-
     def heap_mapper_init(self):
         self.h = []
         self.n = 100
@@ -67,7 +64,6 @@ class Top100_MR(MRJob):
         largest = nlargest(self.n, self.h)
         for count, word in largest:
             yield (None, (count, word))
-
 
     def heap_reducer_init(self):
         self.h_all = []
@@ -88,18 +84,18 @@ class Top100_MR(MRJob):
 
     def steps(self):
         return [
-            MRStep(mapper_init   = self.string_mapper_init,
-                   mapper        = self.string_mapper,
-                   reducer       = self.string_reducer),
-            MRStep(mapper        = self.mapper_extract_xml_words,
-                   combiner      = self.combiner_count_words,
-                   reducer       = self.reducer_count_words),
-            MRStep(mapper_init   = self.heap_mapper_init,
-                   mapper        = self.heap_mapper,
-                   mapper_final  = self.heap_mapper_final,
-                   reducer_init  = self.heap_reducer_init,
-                   reducer       = self.heap_reducer,
-                   reducer_final = self.heap_reducer_final)]
+            MRStep(mapper_init=self.string_mapper_init,
+                   mapper=self.string_mapper,
+                   reducer=self.string_reducer),
+            MRStep(mapper=self.mapper_extract_xml_words,
+                   combiner=self.combiner_count_words,
+                   reducer=self.reducer_count_words),
+            MRStep(mapper_init=self.heap_mapper_init,
+                   mapper=self.heap_mapper,
+                   mapper_final=self.heap_mapper_final,
+                   reducer_init=self.heap_reducer_init,
+                   reducer=self.heap_reducer,
+                   reducer_final=self.heap_reducer_final)]
 
 
 if __name__ == '__main__':
