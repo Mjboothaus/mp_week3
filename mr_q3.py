@@ -4,7 +4,7 @@ from mrjob.job import MRJob
 from mrjob.step import MRStep
 import xml.etree.ElementTree as et
 import re
-# import mwparserfromhell
+
 from mwparserfromhell import parse
 from heapq import nlargest, heappush
 
@@ -37,7 +37,8 @@ class Top100_MR(MRJob):
         for tag, text in tag_and_text:
             if (tag == TEXT_TAG and text):
                 parse_filter = parse(text)
-                for parsedtext in parse_filter.filter_text().strip_code():
+                parse_filter2 = parse_filter.strip_code()
+                for parsedtext in parse_filter2.filter_text():
                     for word in RE_WORD.findall(parsedtext.value):
                         yield (word.lower(), 1)
 
