@@ -8,10 +8,9 @@ import re
 from mwparserfromhell import parse
 from heapq import nlargest, heappush
 
-RE_WORD = re.compile(r'\w+')
-
+RE_WORD  = re.compile(r'\w+')
 RE_START = re.compile('.*<page>.*')
-RE_END = re.compile('.*</page>.*')
+RE_END   = re.compile('.*</page>.*')
 
 TEXT_TAG = 'text'
 
@@ -37,8 +36,8 @@ class Top100_MR(MRJob):
         tag_and_text = [(x.tag, x.text) for x in root.getiterator()]
         for tag, text in tag_and_text:
             if (tag == TEXT_TAG and text):
-                parse_filter = parse(text).strip_code()
-                for parsedtext in parse_filter.filter_text():
+                parse_filter = parse(text)
+                for parsedtext in parse_filter.filter_text().strip_code():
                     for word in RE_WORD.findall(parsedtext.value):
                         yield (word.lower(), 1)
 
