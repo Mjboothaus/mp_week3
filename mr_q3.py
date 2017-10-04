@@ -37,8 +37,8 @@ class Top100_MR(MRJob):
         for tag, text in tag_and_text:
             if (tag == TEXT_TAG and text):
                 parse_filter = parse(text)
-                parse_filter2 = parse_filter.strip_code()
-                for parsedtext in parse_filter2.filter_text():
+                # parse_filter2 = parse_filter.strip_code()
+                for parsedtext in parse_filter.strip_code():
                     for word in RE_WORD.findall(parsedtext.value):
                         yield (word.lower(), 1)
 
