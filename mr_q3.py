@@ -37,8 +37,13 @@ class Top100_MR(MRJob):
         for tag, text in tag_and_text:
             if (tag == TEXT_TAG and text):
                 parse_filter = parse(text)
-                # parse_filter2 = parse_filter.strip_code()
-                for parsedtext in parse_filter.strip_code():
+                parse_strip  = parse_filter.strip_code(normalize=True, collapse=True)
+
+                # e.g. from https://programtalk.com/python-examples/mwparserfromhell.parse/
+                # wikicode = mwparserfromhell.parse(self.text)
+                # clean = wikicode.strip_code(normalize=True, collapse=True)
+
+                for parsedtext in parse_strip:
                     for word in RE_WORD.findall(parsedtext.value):
                         yield (word.lower(), 1)
 
