@@ -43,7 +43,7 @@ class Top100_MR(MRJob):
                 # wikicode = mwparserfromhell.parse(self.text)
                 # clean = wikicode.strip_code(normalize=True, collapse=True)
 
-                for parsedtext in parse_strip:
+                for parsedtext in parse_strip.split():
                     for word in RE_WORD.findall(parsedtext.value):
                         yield (word.lower(), 1)
 
