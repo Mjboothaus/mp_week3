@@ -44,7 +44,7 @@ class Top100_MR(MRJob):
                 # clean = wikicode.strip_code(normalize=True, collapse=True)
 
                 for parsedtext in parse_strip.split():
-                    for word in RE_WORD.findall(parsedtext.value):
+                    for word in RE_WORD.findall(parsedtext):
                         yield (word.lower(), 1)
 
     def combiner_count_words(self, word, counts):
